@@ -1,61 +1,38 @@
-person(english).
-person(swede).
-person(germans).
-person(dane).
-person(norway).
+onstreet(X,s(X,_,_,_,_)).
+onstreet(X,s(_,X,_,_,_)).
+onstreet(X,s(_,_,X,_,_)).
+onstreet(X,s(_,_,_,X,_)).
+onstreet(X,s(_,_,_,_,X)).
 
-color(red).
-color(yellow).
-color(green).
-color(white).
-color(blue).
+middlehouse(X,s(_,_,X,_,_)).
+firsthouse(X,s(X,_,_,_,_)).
 
-smoke(prince).
-smoke(blend).
-smoke(bluemasters).
-smoke(dunhills).
-smoke(pallmall).
+toleft(X,Y,s(X,Y,_,_,_)).
+toleft(X,Y,s(_,X,Y,_,_)).
+toleft(X,Y,s(_,_,X,Y,_)).
+toleft(X,Y,s(_,_,_,X,Y)).
 
-drink(tea).
-drink(milk).
-drink(coffee).
-drink(water).
-drink(bier).
+toright(Y,X,s(X,Y,_,_,_)).
+toright(Y,X,s(_,X,Y,_,_)).
+toright(Y,X,s(_,_,X,Y,_)).
+toright(Y,X,s(_,_,_,X,Y)).
 
-pet(dogs).
-pet(horses).
-pet(cats).
-pet(birds).
-pet(fish).
+nextto(X,Y,S) :- toleft(X,Y,S); toright(X,Y,S). 
 
-first(X):-person_color(norway, X).
-first(X):-left(X, Y), left(Y, Z), left(Z, A), left(A, _).
-left(green, white).
-center(X):-left(Z, Y), left(Y, X), first(Z).
+clue1(S) :- onstreet(house(englishman,red,_,_,_),S).
+clue2(S) :- onstreet(house(spaniard,_,dog,_,_),S).
+clue3(S) :- onstreet(house(_,green,_,_,coffe),S).
+clue4(S) :- onstreet(house(ukrainian,_,_,_,tea),S).
+clue5(S) :- toright(house(_,green,_,_,_),house(_,ivory,_,_,_),S).
+clue6(S) :- onstreet(house(_,_,snails,tennis,_),S).
+clue7(S) :- onstreet(house(_,yellow,_,chess,_),S).
+clue8(S) :- middlehouse(house(_,_,_,_,milk),S).
+clue9(S) :- firsthouse(house(norwegian,_,_,_,_),S).
+clue10(S) :- nextto(house(_,_,_,rugby,_),house(_,_,fox,_,_),S).
+clue11(S) :- nextto(house(_,_,_,chess,_),house(_,_,horse,_,_),S).
+clue12(S) :- onstreet(house(_,_,_,volleyball,orangejuice),S).
+clue13(S) :- onstreet(house(japanese,_,_,go,_),S).
+clue14(S) :- nextto(house(norwegian,_,_,_,_),house(_,blue,_,_,_),S).
+clue15(S) :- nextto(house(_,_,_,_,tea),house(_,_,_,_,milo),S).
 
-person_color(english, red).
-person_color(X, Y):-person(X), color(Y).
-
-person_pet(swede, dogs).
-person_pet(X, horses):-neighbour(Y, X), person_smoke(Y, dunhills), person(X), person(Y).
-person_pet(X, Y):-person(X), pet(Y).
-
-person_smoke(germans, prince).
-person_smoke(X, blend):-neighbour(Y, X), person_pet(Y, cats), neighbour(Z, X), person_drinks(Z, water), person(X), person(Y), person(Z).
-person_smoke(X, bluemasters):-person_drinks(X, bier), person(X).
-person_smoke(X, Y):-person(X), smoke(Y).
-
-person_drinks(dane, tea).
-person_drinks(X, Y):-(Y=:=milk, person(X), person_color(X, Y), center(Y));(person(X), drink(Y)).
-
-color_drinks(green, coffee).
-color_drinks(X, Y):-person_color(Z, X), person_drinks(Z, Y), person(Z), color(X), drink(Y).
-
-smoke_pet(pallmall, birds).
-smoke_pet(X, Y):-person_smoke(Z, X), person_pet(Z, Y), person(Z), smoke(X), pet(Y).
-
-color_smoke(yellow, dunhills).
-color_smoke(X, Y):-person_smoke(Z, Y), person_color(Z, X), person(Z), smoke(Y), color(X).
-
-neighbour(norway, X):-person_color(X, blue), person(X).
-neighbour(X, Y):-left(X, Y);left(Y, X).
+clue(S) :- clue1(S),clue2(S),clue3(S),clue4(S),clue5(S),clue6(S),clue7(S),clue8(S),clue9(S),clue10(S),clue11(S),clue12(S),clue13(S),clue14(S),clue15(S).
