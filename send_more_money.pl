@@ -1,3 +1,4 @@
+%% Some facts about the digits
 digit(0).
 digit(1).
 digit(2).
@@ -9,8 +10,10 @@ digit(7).
 digit(8).
 digit(9).
 
+%% Defining base 2 digit sums
 sum(X, Y, Z):- digit(X), digit(Y), Z is X + Y.
 
+%% Defining sum of no.s from right to left 
 solve([], [], [], 0).
 solve([X1|X], [Y1|Y], [Z1|Z], Carry):-
 			sum(X1, Y1, T),
@@ -22,7 +25,7 @@ solve([X1|X], [Y1|Y], [Z1|Z], Carry):-
 			NCarry is div(Temp, 10),
 			solve(X, Y, Z, NCarry).
 
-
+%% Main predicate which user will be calling, Z = X + Y
 solve(X, Y, Z):- 
 			length(X, XLen),
 			length(Y, YLen),
