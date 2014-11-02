@@ -52,20 +52,20 @@ connected([Vertex, OtherVertex | Rest], Edges):-
 						
 %% Checks if Tree is spanning tree or not of the graph given
 %% Brute Force Approach
-spanning_tree(V, Edges, Tree):-
+brute_spanning_tree(V, Edges, Tree):-
 					find_subset(Edges, Tree),
 					connected(V, Tree),
 					\+ cycle_in_graph(Tree).
 					
 %% Algorithmic Approach - Kruskal's Algorithm
 %% Assumption is Graph given will be connected
-kruskal_spanning_tree(V, [A | Graph], Tree, FTree):-
-					\+ cycle_in_graph([A | Tree]), 
-					kruskal_spanning_tree(V, Graph, [A | Tree], FTree).
-kruskal_spanning_tree(V, [_ | Graph], Tree, FTree):-
-					kruskal_spanning_tree(V, Graph, Tree, FTree).
 kruskal_spanning_tree(V, [], Tree, Tree):-
 					length(V, VSize),
 					TSize is VSize - 1,
 					length(Tree, TSize),
 					\+ cycle_in_graph(Tree).
+kruskal_spanning_tree(V, [A | Graph], Tree, FTree):-
+					\+ cycle_in_graph([A | Tree]), 
+					kruskal_spanning_tree(V, Graph, [A | Tree], FTree).
+kruskal_spanning_tree(V, [_ | Graph], Tree, FTree):-
+					kruskal_spanning_tree(V, Graph, Tree, FTree).
