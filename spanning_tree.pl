@@ -1,3 +1,10 @@
+%% Generate all possible subsets
+find_subset([], []).
+find_subset([E | Tail], [E | NTail]):-
+					find_subset(Tail, NTail).
+find_subset([_ | Tail], NTail):-
+					find_subset(Tail, NTail).
+
 %% Checks if there is cycle in graph or not
 %% cycle(start, curr, edges)
 %% Algo is to check is there is a path from curr to start
@@ -36,10 +43,15 @@ path(X, Y, Edges):-
 					path(Next, Y, NewEdges), !.
 					
 %% Checks of graph is connected or not
-%% TODO bug not checking all possible vertices pair
 connected([], _).
 connected([_], _):- !.
 connected([Vertex, OtherVertex | Rest], Edges):-
 					path(Vertex, OtherVertex, Edges),
 					connected([Vertex | Rest], Edges),
 					connected([OtherVertex | Rest], Edges), !.
+					
+%% Checks if tree or not
+spanning_tree(V, Edges, Tree):-
+					find_subset(Edges, Tree),
+					connected(V, Tree),
+					\+ cycle_in_graph(Tree).
