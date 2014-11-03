@@ -18,7 +18,13 @@ cycle(Start, Curr, Edges):-
 cycle(Start, Curr, Edges):-
 					member(Curr/Next, Edges),
 					delete(Edges, Curr/Next, NewEdges),
-					cycle(Start, Next, NewEdges).
+					cycle(Start, Next, NewEdges),
+					!.
+cycle(Start, Curr, Edges):-
+					member(Next/Curr, Edges),
+					delete(Edges, Next/Curr, NewEdges),
+					cycle(Start, Next, NewEdges),
+					!.
 					
 %% With the edges given, it checks if cycle
 %% is present in the cycle or not
